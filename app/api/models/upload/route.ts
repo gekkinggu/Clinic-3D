@@ -31,7 +31,15 @@ export async function POST(req: Request) {
     const stlBuffer = Buffer.from(await stlFile.arrayBuffer());
     const stlUploadResult = await new Promise<any>((resolve, reject) => {
       const uploadStream = cloudinary.v2.uploader.upload_stream(
-        { resource_type: "raw", folder: "models/stl", public_id: `${Date.now()}-${name.replace(/\s+/g, "-")}` },
+        {
+          resource_type: "raw",
+          folder: "models/stl",
+          public_id: `${Date.now()}-${name.replace(/\s+/g, "-")}`,
+          format: "stl", // <--- ensure Cloudinary saves as .stl
+          use_filename: true,
+          unique_filename: false,
+          filename_override: stlFile.name, // <--- preserve original filename if you want
+        },
         (err, result) => (err ? reject(err) : resolve(result))
       );
       uploadStream.end(stlBuffer);
