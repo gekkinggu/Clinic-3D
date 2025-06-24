@@ -4,7 +4,7 @@ import { Feature, NavigationItem } from "@/types";
 export const NAVIGATION_ITEMS: NavigationItem[] = [
   { label: "HOME", href: "/" },
   { label: "CATEGORY", href: "/category" },
-  { label: "ABOUT US", href: "/about" },
+  { label: "MODELS", href: "/models" }, // changed from "ABOUT US"
   { label: "BLOG", href: "/blog" },
   { label: "SIGN IN/UP", href: "/auth/signin" },
 ];
