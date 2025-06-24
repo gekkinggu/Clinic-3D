@@ -29,9 +29,16 @@ export default function UploadModelPage() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setLoading(true);
     setError(null);
     setSuccess(false);
+
+    // Check if user is logged in before uploading
+    if (!user) {
+      setError("You must be signed in to upload a model.");
+      return;
+    }
+
+    setLoading(true);
 
     try {
       const formData = new FormData();
@@ -67,6 +74,13 @@ export default function UploadModelPage() {
       <h1 className="text-3xl font-bold text-amber-600 mb-8 text-center">
         Upload 3D Model
       </h1>
+      <button
+        type="button"
+        onClick={() => window.location.href = "/"}
+        className="mb-6 text-amber-600 hover:underline font-medium"
+      >
+        ← Back to Home
+      </button>
       <form
         className="bg-white rounded-xl shadow-lg p-8 flex flex-col gap-6 border border-gray-100"
         onSubmit={handleSubmit}

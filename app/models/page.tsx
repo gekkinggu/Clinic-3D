@@ -30,6 +30,13 @@ function ModelsPageContent() {
       <h1 className="text-3xl font-bold text-amber-600 mb-8 text-center">
         3D Models Gallery
       </h1>
+      <button
+        type="button"
+        onClick={() => (window.location.href = "/")}
+        className="mb-6 text-amber-600 hover:underline font-medium"
+      >
+        ← Back to Home
+      </button>
       <div className="flex justify-center mb-8">
         <input
           type="text"
