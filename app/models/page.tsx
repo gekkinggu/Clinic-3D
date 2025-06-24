@@ -1,12 +1,12 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, Suspense } from "react";
+import { useSearchParams } from "next/navigation";
 import Link from "next/link";
 import Image from "next/image";
 import { models } from "./modelsData";
-import { useSearchParams } from "next/navigation";
 
-export default function ModelsPage() {
+function ModelsPageContent() {
   const searchParams = useSearchParams();
   const initialQuery = searchParams.get("q") || "";
   const [search, setSearch] = useState(initialQuery);
@@ -62,7 +62,9 @@ export default function ModelsPage() {
                 />
               </div>
               <div className="p-4 w-full text-center">
-                <h2 className="text-lg font-semibold text-gray-800">{model.name}</h2>
+                <h2 className="text-lg font-semibold text-gray-800">
+                  {model.name}
+                </h2>
                 <div className="flex flex-wrap justify-center gap-1 mt-2">
                   {model.keywords.map((kw) => (
                     <span
@@ -79,5 +81,13 @@ export default function ModelsPage() {
         )}
       </div>
     </main>
+  );
+}
+
+export default function ModelsPage() {
+  return (
+    <Suspense fallback={<div>Loading models...</div>}>
+      <ModelsPageContent />
+    </Suspense>
   );
 }
