@@ -46,13 +46,13 @@ export default function ModelDetailPage() {
       {/* Left: 3D Preview and Info */}
       <div className="flex-1 flex flex-col items-center">
         <div className="w-full h-[400px] bg-gray-100 rounded-xl shadow-md flex items-center justify-center mb-6">
-          <StlViewer
+          {/* <StlViewer
             url={model.stl}
             width={500}
             height={400}
             orbitControls
             style={{ borderRadius: "0.75rem", background: "#f3f4f6" }}
-          />
+          /> */}
         </div>
         <h1 className="text-2xl font-bold text-gray-800 mb-1">{model.name}</h1>
         <div className="text-sm text-gray-500 mb-4">Uploaded by <span className="font-medium">{model.uploader}</span></div>
