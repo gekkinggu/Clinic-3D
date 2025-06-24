@@ -1,11 +1,16 @@
 "use client";
 
 import { useParams } from "next/navigation";
-import { useMemo } from "react";
+import { useMemo, Suspense } from "react";
 import dynamic from "next/dynamic";
 import Image from "next/image";
 import Link from "next/link";
 import { models } from "../modelsData";
+import { Canvas } from "@react-three/fiber";
+import { OrbitControls } from "@react-three/drei";
+import { useLoader } from "@react-three/fiber";
+// @ts-ignore
+import { STLLoader } from "three/examples/jsm/loaders/STLLoader";
 
 // Dynamically import react-stl-viewer (client-side only)
 const StlViewer = dynamic(() =>
@@ -22,6 +27,16 @@ interface Model {
   stl: string;
   images: string[];
   keywords: string[];
+}
+
+// STL Model component for three.js
+function STLModel({ url }: { url: string }) {
+  const geometry = useLoader(STLLoader, url);
+  return (
+    <mesh geometry={geometry} scale={0.5}>
+      <meshStandardMaterial color="#F59E42" />
+    </mesh>
+  );
 }
 
 export default function ModelDetailPage() {
@@ -46,13 +61,14 @@ export default function ModelDetailPage() {
       {/* Left: 3D Preview and Info */}
       <div className="flex-1 flex flex-col items-center">
         <div className="w-full h-[400px] bg-gray-100 rounded-xl shadow-md flex items-center justify-center mb-6">
-          {/* <StlViewer
-            url={model.stl}
-            width={500}
-            height={400}
-            orbitControls
-            style={{ borderRadius: "0.75rem", background: "#f3f4f6" }}
-          /> */}
+          <Suspense fallback={<div>Loading 3D Model...</div>}>
+            <Canvas camera={{ position: [0, 0, 100] }} style={{ borderRadius: "0.75rem", background: "#f3f4f6" }}>
+              <ambientLight intensity={0.7} />
+              <directionalLight position={[10, 10, 10]} intensity={0.5} />
+              <STLModel url={model.stl} />
+              <OrbitControls />
+            </Canvas>
+          </Suspense>
         </div>
         <h1 className="text-2xl font-bold text-gray-800 mb-1">{model.name}</h1>
         <div className="text-sm text-gray-500 mb-4">Uploaded by <span className="font-medium">{model.uploader}</span></div>
