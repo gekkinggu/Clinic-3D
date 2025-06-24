@@ -3,7 +3,6 @@ import { Feature, NavigationItem } from "@/types";
 
 export const NAVIGATION_ITEMS: NavigationItem[] = [
   { label: "HOME", href: "/" },
-  { label: "CATEGORY", href: "/category" },
   { label: "MODELS", href: "/models" }, // changed from "ABOUT US"
   { label: "UPLOAD", href: "/upload" },
   { label: "SIGN IN/UP", href: "/auth/signin" },

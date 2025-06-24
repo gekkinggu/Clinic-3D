@@ -6,6 +6,7 @@ import Image from "next/image";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { cn } from "@/lib/utils";
+import { useRouter } from "next/navigation";
 
 interface HeroSectionProps {
   className?: string;
@@ -13,11 +14,15 @@ interface HeroSectionProps {
 
 export default function HeroSection({ className }: HeroSectionProps) {
   const [searchQuery, setSearchQuery] = useState("");
+  const router = useRouter();
 
   const handleSearch = (e: React.FormEvent) => {
     e.preventDefault();
-    // Handle search logic here
-    console.log("Search query:", searchQuery);
+    if (searchQuery.trim()) {
+      router.push(`/models?q=${encodeURIComponent(searchQuery.trim())}`);
+    } else {
+      router.push("/models");
+    }
   };
 
   return (
