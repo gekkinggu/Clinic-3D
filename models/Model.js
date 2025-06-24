@@ -1,7 +1,6 @@
 import mongoose from "mongoose";
 
 const ModelSchema = new mongoose.Schema({
-  id: { type: String, required: true, unique: true },
   name: { type: String, required: true },
   uploader: { type: String, required: true },
   description: { type: String, required: true },
@@ -10,4 +9,5 @@ const ModelSchema = new mongoose.Schema({
   keywords: [{ type: String, required: true }],
 }, { timestamps: true });
 
-export default ModelSchema;
+// Export the model, not the schema!
+export default mongoose.models.Model || mongoose.model("Model", ModelSchema);
