@@ -2,9 +2,10 @@ import { NextResponse } from "next/server";
 import { connectToDatabase } from "@/lib/mongodb";
 import Model from "@/models/Model";
 
-export async function GET(req: Request, context: { params: { id: string } }) {
+export async function GET(req: Request, context: { params: { id: string } } | Promise<{ params: { id: string } }>) {
   await connectToDatabase();
-  const { id } = await context.params; // <-- await here
+  const ctx = await context as { params: { id: string } };
+  const { id } = ctx.params;
 
   try {
     const model = await Model.findById(id).lean();
