@@ -4,7 +4,7 @@ import Model from "@/models/Model";
 
 export async function GET(
   req: Request,
-  context: { params: { id: string } } // RouteContext type
+  context: { params: { id: string } }
 ) {
   await connectToDatabase();
   const { id } = context.params;
