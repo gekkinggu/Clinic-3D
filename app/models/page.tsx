@@ -4,24 +4,44 @@ import { useState, useEffect, Suspense } from "react";
 import { useSearchParams } from "next/navigation";
 import Link from "next/link";
 import Image from "next/image";
-import { models } from "./modelsData";
+import { models as hardcodedModels } from "./modelsData";
 
 function ModelsPageContent() {
   const searchParams = useSearchParams();
   const initialQuery = searchParams.get("q") || "";
   const [search, setSearch] = useState(initialQuery);
+  const [dbModels, setDbModels] = useState<any[]>([]);
+  const [loading, setLoading] = useState(true);
 
   // Keep search bar in sync with query param if user navigates back/forward
   useEffect(() => {
     setSearch(initialQuery);
   }, [initialQuery]);
 
+  useEffect(() => {
+    async function fetchDbModels() {
+      setLoading(true);
+      try {
+        const res = await fetch("/api/models");
+        const data = await res.json();
+        setDbModels(data);
+      } catch (e) {
+        setDbModels([]);
+      }
+      setLoading(false);
+    }
+    fetchDbModels();
+  }, []);
+
+  // Merge hardcoded and db models
+  const allModels = [...dbModels, ...hardcodedModels];
+
   // Filter models by name or keywords
-  const filteredModels = models.filter((model) => {
+  const filteredModels = allModels.filter((model) => {
     const searchLower = search.toLowerCase();
     return (
       model.name.toLowerCase().includes(searchLower) ||
-      model.keywords.some((kw) => kw.toLowerCase().includes(searchLower))
+      model.keywords.some((kw: string) => kw.toLowerCase().includes(searchLower))
     );
   });
 
@@ -47,15 +67,19 @@ function ModelsPageContent() {
         />
       </div>
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-8">
-        {filteredModels.length === 0 ? (
+        {loading ? (
+          <div className="col-span-full text-center text-gray-500">
+            Loading models...
+          </div>
+        ) : filteredModels.length === 0 ? (
           <div className="col-span-full text-center text-gray-500">
             No models found.
           </div>
         ) : (
           filteredModels.map((model) => (
             <Link
-              key={model.id}
-              href={`/models/${model.id}`}
+              key={model._id || model.id}
+              href={`/models/${model._id || model.id}`}
               className="bg-white rounded-xl shadow-md hover:shadow-lg transition-shadow duration-200 overflow-hidden flex flex-col items-center border border-gray-100 group"
             >
               <div className="w-full h-48 relative">
@@ -73,7 +97,7 @@ function ModelsPageContent() {
                   {model.name}
                 </h2>
                 <div className="flex flex-wrap justify-center gap-1 mt-2">
-                  {model.keywords.map((kw) => (
+                  {model.keywords.map((kw: string) => (
                     <span
                       key={kw}
                       className="bg-amber-100 text-amber-700 px-2 py-0.5 rounded-full text-xs font-medium"

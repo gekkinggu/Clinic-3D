@@ -7,9 +7,7 @@ export const models = [
     description: "A 3D printable prosthetic arm designed for modularity and ease of assembly.",
     stl: "/models/prosthetic-arm.stl",
     images: [
-      "/models/prosthetic-arm.jpg",
-      "/models/prosthetic-arm-2.jpg",
-      "/models/prosthetic-arm-3.jpg",
+      "/models/prosthetic-arm.jpg"
     ],
     keywords: ["prosthetic", "arm", "assistive", "modular"],
   },
@@ -20,8 +18,7 @@ export const models = [
     description: "Replacement handle for standard wheelchairs, ergonomic and durable.",
     stl: "/models/wheelchair-handle.stl",
     images: [
-      "/models/wheelchair-handle.jpg",
-      "/models/wheelchair-handle-2.jpg",
+      "/models/wheelchair-handle.jpg"
     ],
     keywords: ["wheelchair", "handle", "replacement", "ergonomic"],
   },
@@ -32,8 +29,7 @@ export const models = [
     description: "A compact and sturdy case for storing hearing aids safely.",
     stl: "/models/hearing-aid-case.stl",
     images: [
-      "/models/hearing-aid-case.jpg",
-      "/models/hearing-aid-case-2.jpg",
+      "/models/hearing-aid-case.jpg"
     ],
     keywords: ["hearing aid", "case", "storage", "protective"],
   },
