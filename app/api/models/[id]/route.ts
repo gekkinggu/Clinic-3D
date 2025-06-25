@@ -3,19 +3,18 @@ import { connectToDatabase } from "@/lib/mongodb";
 import Model from "@/models/Model";
 
 export async function GET(
-  req: Request,
-  context: { params: { id: string } }
+  request: Request,
+  { params }: { params: { id: string } }
 ) {
   await connectToDatabase();
-  const { id } = context.params;
 
   try {
-    const model = await Model.findById(id).lean();
+    const model = await Model.findById(params.id).lean();
     if (!model) {
       return NextResponse.json({ error: "Model not found" }, { status: 404 });
     }
     return NextResponse.json(model);
-  } catch (err) {
+  } catch (error) {
     return NextResponse.json({ error: "Invalid ID or server error" }, { status: 400 });
   }
 }
