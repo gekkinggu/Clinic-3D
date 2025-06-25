@@ -1,0 +1,18 @@
+import { NextResponse } from "next/server";
+import { connectToDatabase } from "@/lib/mongodb";
+import Model from "@/models/Model";
+
+export async function GET(req: Request, context: { params: { id: string } }) {
+  await connectToDatabase();
+  const { id } = await context.params; // <-- await here
+
+  try {
+    const model = await Model.findById(id).lean();
+    if (!model) {
+      return NextResponse.json({ error: "Model not found" }, { status: 404 });
+    }
+    return NextResponse.json(model);
+  } catch (err) {
+    return NextResponse.json({ error: "Invalid ID or server error" }, { status: 400 });
+  }
+}
